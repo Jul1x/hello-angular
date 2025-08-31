@@ -1,0 +1,28 @@
+<h2>Productos 🍹</h2>
+
+<div class="productos-container">
+  <!-- Productos -->
+  <div class="productos-grid">
+    <div class="producto-card" *ngFor="let p of productos">
+      <img [src]="p.img" [alt]="p.nombre">
+      <h3>{{ p.nombre }}</h3>
+      <p>{{ p.descripcion }}</p>
+      <p><b>Precio: ${{ p.precio }}</b></p>
+      <button (click)="comprar(p)">Comprar</button>
+    </div>
+  </div>
+
+  <!-- Carrito -->
+  <div class="carrito">
+    <h3>Carrito 🛒</h3>
+    <div *ngIf="carrito.length === 0">
+      No hay productos en el carrito.
+    </div>
+    <ul *ngIf="carrito.length > 0">
+      <li *ngFor="let item of carrito">{{ item.nombre }} - ${{ item.precio }}</li>
+    </ul>
+    <p *ngIf="carrito.length > 0"><b>Total: ${{ total() }}</b></p>
+  </div>
+</div>
+
+<a routerLink="/inicio">⬅ Volver al inicio</a>

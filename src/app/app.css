@@ -1,0 +1,20 @@
+nav a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: darkblue;
+}
+
+nav a.active {
+  font-weight: bold;
+  color: darkred;
+}
+
+header, footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+main {
+  padding: 20px;
+}
