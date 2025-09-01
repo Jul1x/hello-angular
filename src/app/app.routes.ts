@@ -3,6 +3,7 @@ import { InicioComponent } from './inicio/inicio';
 import { ProductosComponent } from './productos/productos';
 import { InformacionComponent } from './informacion/informacion';
 import { ContactoComponent } from './contacto/contacto';
+import { AppComponent } from './app';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },

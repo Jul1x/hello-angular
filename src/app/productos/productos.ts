@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-productos',
   standalone: true,
@@ -10,17 +11,25 @@ import { CommonModule } from '@angular/common';
 })
 export class ProductosComponent {
   productos = [
-    { nombre: 'Cerveza artesanal', precio: 10, descripcion: 'Cerveza hecha a mano con lúpulo especial.', img: 'assets/cerveza.jpg' },
-    { nombre: 'Vino tinto', precio: 25, descripcion: 'Vino importado de excelente calidad.', img: 'assets/vino.jpg' },
-    { nombre: 'Ron añejo', precio: 30, descripcion: 'Ron de 12 años, sabor intenso.', img: 'assets/ron.jpg' },
-    { nombre: 'Whisky escocés', precio: 40, descripcion: 'Whisky de malta pura, edición limitada.', img: 'assets/whisky.jpg' }
+    { nombre: 'Cerveza Corona Extra x6und', precio: 25.600, descripcion: 'Refrescante cerveza mexicana, ligera y suave, ideal para disfrutar con limón y sal.', img: 'assets/cerveza.jpg' },
+    { nombre: 'Vino Tinto Bordeaux', precio: 26.392, descripcion: 'Vino elegante de origen francés, con cuerpo y sabor intenso, perfecto para acompañar carnes y quesos.', img: 'assets/vino.jpg' },
+    { nombre: 'Ron Viejo de Caldas', precio: 55.000, descripcion: 'Tradicional ron colombiano, con notas dulces y suaves, ideal para cócteles o disfrutar solo', img: 'assets/ron.jpg' },
+    { nombre: 'Whiskey Jack Daniel’s Tennessee', precio: 129.700, descripcion: 'Clásico whiskey americano con sabor ahumado y robusto, perfecto para quienes disfrutan tragos fuertes.', img: 'assets/whisky.jpg' }
   ];
 
   carrito: any[] = [];
 
   comprar(producto: any) {
     this.carrito.push(producto);
-    alert(`Has agregado "${producto.nombre}" al carrito!`);
+  }
+
+  eliminar(producto: any) {
+    this.carrito = this.carrito.filter(p => p !== producto);
+  }
+
+  guardar() {
+    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+    alert('Carrito guardado en localStorage!');
   }
 
   total(): number {

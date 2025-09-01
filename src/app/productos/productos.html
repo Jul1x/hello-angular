@@ -3,25 +3,35 @@
 <div class="productos-container">
   <!-- Productos -->
   <div class="productos-grid">
-    <div class="producto-card" *ngFor="let p of productos">
-      <img [src]="p.img" [alt]="p.nombre">
-      <h3>{{ p.nombre }}</h3>
-      <p>{{ p.descripcion }}</p>
-      <p><b>Precio: ${{ p.precio }}</b></p>
-      <button (click)="comprar(p)">Comprar</button>
-    </div>
+    @for (p of productos; track p) {
+      <div class="producto-card">
+        <img [src]="p.img" [alt]="p.nombre">
+        <h3>{{ p.nombre }}</h3>
+        <p>{{ p.descripcion }}</p>
+        <p><b>Precio: ${{ p.precio.toFixed(3) }}</b></p>
+        <button (click)="comprar(p)">Comprar</button>
+      </div>
+    }
   </div>
 
   <!-- Carrito -->
   <div class="carrito">
     <h3>Carrito 🛒</h3>
-    <div *ngIf="carrito.length === 0">
-      No hay productos en el carrito.
-    </div>
-    <ul *ngIf="carrito.length > 0">
-      <li *ngFor="let item of carrito">{{ item.nombre }} - ${{ item.precio }}</li>
-    </ul>
-    <p *ngIf="carrito.length > 0"><b>Total: ${{ total() }}</b></p>
+
+    @if (carrito.length === 0) {
+      <div>No hay productos en el carrito.</div>
+    } @else {
+      <ul>
+        @for (item of carrito; track item) {
+         <li>
+          {{ item.nombre }} - ${{ item.precio.toFixed(3) }}
+          <button (click)="eliminar(item)">❌</button>
+        </li>
+        }
+      </ul>
+      <p><b>Total: ${{ total().toFixed(3) }}</b></p>
+      <button (click)="guardar()">💾 Guardar carrito</button>
+    }
   </div>
 </div>
 
