@@ -1,11 +1,79 @@
-.inicio-container {
-    text-align: center;
-    padding: 20px;
-    background-color: #f0f0f0;
+/* Estilo principal para el banner superior de la página. */
+.hero {
+  /* Fondo con un color sólido. Puedes cambiar #2c3e50 por el que prefieras. */
+  background-color: #694e39;
+  color: white; /* Color de texto para contraste con el fondo oscuro. */
+  padding: 50px 20px;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 40px;
 }
 
-h1 {
-    color: #333;
+.hero-content h1 {
+  font-size: 2.8rem; /* Tamaño grande para el título principal. */
+  margin-bottom: 10px;
 }
 
-p { font-size: 16px; }
+.hero-content p {
+  font-size: 1.2rem; /* Texto de subtítulo o descripción. */
+  margin-bottom: 30px;
+}
+
+/* Botón de Llamada a la Acción (Call to Action) */
+.cta-button {
+  background-color: #ffc107; /* Color de fondo llamativo. */
+  color: #333;
+  padding: 15px 30px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s ease; /* Transición suave para el hover. */
+}
+
+.cta-button:hover {
+  background-color: #e0a800; /* Cambio de color al pasar el mouse. */
+}
+
+/* === SECCIÓN DE PRODUCTOS DESTACADOS === */
+.featured-products {
+  text-align: center;
+}
+
+.featured-products h2 {
+  font-size: 2rem; /* Título para la sección de productos. */
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Rejilla de Productos */
+.products-grid {
+  display: grid;
+  /* Crea una rejilla responsiva: las columnas se ajustan automáticamente. */
+  /* Cada columna tendrá un mínimo de 250px y se expandirá para llenar el espacio. */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Tarjeta de Producto Individual */
+.product-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  /* Transiciones suaves para efectos visuales al pasar el mouse. */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  /* Efecto de elevación y sombra al pasar el mouse. */
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse. */
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
