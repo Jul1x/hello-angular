@@ -1,0 +1,148 @@
+/* Contenedor Principal Centrado */
+.info-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* --- Sección Sobre Nosotros --- */
+.about-section {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-left: 5px solid #ffc107;
+    /* Borde dorado a la izquierda */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.about-section h2 {
+    color: #4A3728;
+    /* Café corporativo */
+    margin-top: 0;
+}
+
+.about-section p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+/* --- Tarjeta de Contacto --- */
+.contact-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    /* Sombra elegante */
+    overflow: hidden;
+    /* Para que el header no se salga del borde */
+    max-width: 600px;
+    margin: 0 auto;
+    /* Centrar la tarjeta */
+    width: 100%;
+}
+
+.card-header {
+    background-color: #4A3728;
+    /* Café header */
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.card-header p {
+    margin: 10px 0 0 0;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* --- Formulario --- */
+.contact-form {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fcfcfc;
+    box-sizing: border-box;
+    /* Importante para que el padding no rompa el ancho */
+}
+
+/* Efecto al escribir (Focus) */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #ffc107;
+    /* Dorado */
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+    /* Resplandor dorado suave */
+    background-color: #fff;
+}
+
+/* Botón de Enviar */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #ffc107;
+    /* Dorado */
+    color: #4A3728;
+    /* Lertras Café Oscuro para contraste */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #e0a800;
+    /* Dorado más oscuro */
+    transform: translateY(-2px);
+}
+
+/* Footer de contacto */
+.contact-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    color: #666;
+}
+
+/* Enlace volver */
+.back-link {
+    color: #4A3728;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

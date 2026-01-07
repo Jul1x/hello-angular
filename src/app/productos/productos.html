@@ -3,14 +3,14 @@
 <div class="productos-container">
   <!-- Productos -->
   <div class="productos-grid">
-    @for (p of productos; track p) {
-      <div class="producto-card">
-        <img [src]="p.img" [alt]="p.nombre">
-        <h3>{{ p.nombre }}</h3>
-        <p>{{ p.descripcion }}</p>
-        <p><b>Precio: ${{ p.precio.toFixed(3) }}</b></p>
-        <button (click)="comprar(p)">Comprar</button>
-      </div>
+    @for (p of productos; track p.nombre) {
+    <div class="producto-card">
+      <img [src]="p.img" [alt]="p.nombre">
+      <h3>{{ p.nombre }}</h3>
+      <p>{{ p.descripcion }}</p>
+      <p><b>Precio: {{ p.precio | currency:'USD':'symbol':'1.0-0' }}</b></p>
+      <button (click)="addToCart(p)">Agregar al Carrito 🛒</button>
+    </div>
     }
   </div>
 
@@ -19,18 +19,40 @@
     <h3>Carrito 🛒</h3>
 
     @if (carrito.length === 0) {
-      <div>No hay productos en el carrito.</div>
+    <div style="text-align: center; color: #666; padding: 20px;">
+      <p>Tu carrito está vacío.</p>
+      <p>¡Anímate a comprar algo! 😋</p>
+    </div>
     } @else {
-      <ul>
-        @for (item of carrito; track item) {
-         <li>
-          {{ item.nombre }} - ${{ item.precio.toFixed(3) }}
-          <button (click)="eliminar(item)">❌</button>
-        </li>
-        }
-      </ul>
-      <p><b>Total: ${{ total().toFixed(3) }}</b></p>
-      <button (click)="guardar()">Guardar carrito</button>
+    <ul>
+      @for (item of carrito; track item.producto.nombre) {
+      <li>
+        <div class="item-info">
+          <b>{{ item.producto.nombre }}</b>
+          <span>{{ item.producto.precio | currency:'USD':'symbol':'1.0-0' }} x {{ item.cantidad }}</span>
+        </div>
+
+        <div class="item-controls">
+          <button class="btn-qty" (click)="updateQuantity(item.producto, -1)">-</button>
+          <span>{{ item.cantidad }}</span>
+          <button class="btn-qty" (click)="updateQuantity(item.producto, 1)">+</button>
+          <button (click)="removeFromCart(item.producto)" class="delete-btn" title="Eliminar">🗑️</button>
+        </div>
+
+        <div class="item-subtotal">
+          Subtotal: {{ item.producto.precio * item.cantidad | currency:'USD':'symbol':'1.0-0' }}
+        </div>
+      </li>
+      }
+    </ul>
+    <div class="total-section">
+      <p><b>Total: {{ total | currency:'USD':'symbol':'1.0-0' }}</b></p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn-pagar" (click)="finalizarCompra()">Realizar Pedido ✅</button>
+        <button class="btn-vaciar" (click)="clearCart()">Vaciar Carrito 🗑️</button>
+      </div>
+    </div>
     }
   </div>
 </div>

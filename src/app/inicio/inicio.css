@@ -1,79 +1,161 @@
-/* Estilo principal para el banner superior de la página. */
+/* === HERO SECTION === */
 .hero {
-  /* Fondo con un color sólido. Puedes cambiar #2c3e50 por el que prefieras. */
-  background-color: #694e39;
-  color: white; /* Color de texto para contraste con el fondo oscuro. */
-  padding: 50px 20px;
-  text-align: center;
-  border-radius: 10px;
+  /* Imagen de fondo generada */
+  background-image: url('../../assets/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  height: 500px;
+  /* Altura del banner */
+  border-radius: 15px;
+  overflow: hidden;
+  /* Para que el overlay respete el borde */
   margin-bottom: 40px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  /* Capa oscura para leer el texto */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .hero-content h1 {
-  font-size: 2.8rem; /* Tamaño grande para el título principal. */
-  margin-bottom: 10px;
+  font-size: 4rem;
+  color: #fff;
+  margin: 0 0 10px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Georgia', serif;
+  /* Fuente más elegante */
 }
 
 .hero-content p {
-  font-size: 1.2rem; /* Texto de subtítulo o descripción. */
+  font-size: 1.5rem;
+  color: #f0f0f0;
   margin-bottom: 30px;
+  font-weight: 300;
 }
 
-/* Botón de Llamada a la Acción (Call to Action) */
 .cta-button {
-  background-color: #ffc107; /* Color de fondo llamativo. */
-  color: #333;
-  padding: 15px 30px;
-  text-decoration: none;
+  background-color: #ffc107;
+  /* Dorado */
+  color: #4A3728;
+  /* Café oscuro */
+  padding: 15px 35px;
+  font-size: 1.2rem;
   font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s ease; /* Transición suave para el hover. */
+  text-decoration: none;
+  border-radius: 50px;
+  /* Botón píldora */
+  display: inline-block;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
 }
 
 .cta-button:hover {
-  background-color: #e0a800; /* Cambio de color al pasar el mouse. */
+  background-color: #ffdb4d;
+  transform: scale(1.05);
 }
 
-/* === SECCIÓN DE PRODUCTOS DESTACADOS === */
-.featured-products {
+/* === FEATURES / BENEFICIOS === */
+.features {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 50px;
   text-align: center;
 }
 
-.featured-products h2 {
-  font-size: 2rem; /* Título para la sección de productos. */
-  margin-bottom: 30px;
-  color: #333;
+.feature-item {
+  flex: 1;
+  min-width: 200px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Rejilla de Productos */
+.feature-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.feature-item h3 {
+  color: #4A3728;
+  margin: 10px 0;
+}
+
+.feature-item p {
+  color: #666;
+}
+
+/* === DESTACADOS === */
+.featured-products {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.featured-products h2 {
+  font-size: 2.2rem;
+  color: #4A3728;
+  margin-bottom: 30px;
+  position: relative;
+  display: inline-block;
+}
+
 .products-grid {
   display: grid;
-  /* Crea una rejilla responsiva: las columnas se ajustan automáticamente. */
-  /* Cada columna tendrá un mínimo de 250px y se expandirá para llenar el espacio. */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
 }
 
-/* Tarjeta de Producto Individual */
 .product-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
   padding: 20px;
-  /* Transiciones suaves para efectos visuales al pasar el mouse. */
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .product-card:hover {
-  /* Efecto de elevación y sombra al pasar el mouse. */
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
   width: 100%;
-  height: 180px;
-  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse. */
-  border-radius: 5px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 15px;
+}
+
+.product-card h3 {
+  margin: 10px 0;
+  color: #333;
+}
+
+.product-card p {
+  color: #777;
+}
+
+.link-secondary {
+  color: #4A3728;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.link-secondary:hover {
+  text-decoration: underline;
 }
