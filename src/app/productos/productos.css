@@ -183,38 +183,68 @@
   margin-bottom: 10px;
 }
 
-/* Botón GENÉRICO de acción */
+/* Botones de acción */
 .total-section button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   font-weight: bold;
-  font-size: 0.9rem;
-  transition: filter 0.2s;
+  font-size: 1rem;
+  transition: transform 0.2s, background 0.2s;
 }
 
-.total-section button:hover {
-  filter: brightness(1.1);
-  /* Efecto de brillo al pasar el mouse */
-}
-
-/* 1. Botón PAGAR (Verde/Principal) */
-.btn-pagar {
-  background-color: #28a745;
-  /* Green Success */
+.btn-whatsapp {
+  background-color: #25D366;
+  /* Verde WhatsApp */
   color: white;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
 }
 
-/* 2. Botón VACIAR (Rojo/Secundario) */
+.btn-whatsapp:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
 .btn-vaciar {
-  background-color: #dc3545;
-  /* Red Danger */
-  color: white;
-  font-size: 0.8rem !important;
-  /* Un poco más pequeño para quitarle importancia */
-  opacity: 0.9;
+  background-color: #f8d7da;
+  color: #721c24;
+  font-size: 0.85rem !important;
+  margin-top: 5px;
+}
+
+.btn-vaciar:hover {
+  background-color: #f5c6cb;
+}
+
+/* --- Métodos de Pago --- */
+.payment-methods {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px dashed #b0c4de;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.payment-methods p {
+  font-size: 0.85rem !important;
+  font-weight: bold;
+  margin-bottom: 5px !important;
+  color: #333 !important;
+}
+
+.payment-icons {
+  font-size: 0.8rem;
+  color: #00008b;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.payment-methods small {
+  display: block;
+  font-size: 0.7rem;
+  color: #666;
+  font-style: italic;
 }

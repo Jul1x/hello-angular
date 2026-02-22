@@ -1,20 +1,5 @@
 /* === HERO SECTION === */
-.hero {
-  /* Imagen de fondo generada */
-  background-image: url('../../assets/hero-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 
-  height: 500px;
-  /* Altura del banner */
-  border-radius: 15px;
-  overflow: hidden;
-  /* Para que el overlay respete el borde */
-  margin-bottom: 40px;
-  position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
 
 .hero-overlay {
   background: rgba(0, 0, 0, 0.5);

@@ -49,8 +49,19 @@
       <p><b>Total: {{ total | currency:'USD':'symbol':'1.0-0' }}</b></p>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button class="btn-pagar" (click)="finalizarCompra()">Realizar Pedido ✅</button>
+        <button class="btn-whatsapp" (click)="enviarWhatsApp()">
+          Pedir por WhatsApp 📱
+        </button>
         <button class="btn-vaciar" (click)="clearCart()">Vaciar Carrito 🗑️</button>
+      </div>
+
+      <!-- Métodos de Pago Colombia -->
+      <div class="payment-methods">
+        <p>💳 Aceptamos pagos por:</p>
+        <div class="payment-icons">
+          <span>Nequi</span> • <span>Daviplata</span> • <span>Bancolombia</span>
+        </div>
+        <small>Pago seguro contra entrega o transferencia</small>
       </div>
     </div>
     }

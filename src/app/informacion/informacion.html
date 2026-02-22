@@ -16,27 +16,48 @@
       <p>¿Tienes alguna duda o pedido especial?</p>
     </div>
 
-    <form class="contact-form">
+    <!-- Mensaje de éxito -->
+    @if (enviado) {
+    <div class="alert alert-success">
+      ✅ ¡Mensaje enviado! Te responderemos pronto a tu correo.
+    </div>
+    }
+
+    <!-- Mensaje de error -->
+    @if (error) {
+    <div class="alert alert-error">
+      ❌ Hubo un error enviando el mensaje. Intenta de nuevo.
+    </div>
+    }
+
+    <form class="contact-form" (ngSubmit)="enviarMensaje()">
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input id="nombre" type="text" placeholder="Tu nombre completo">
+        <input id="nombre" type="text" placeholder="Tu nombre completo" [(ngModel)]="nombre" name="nombre">
       </div>
 
       <div class="form-group">
         <label for="email">Correo Electrónico</label>
-        <input id="email" type="email" placeholder="tupost@correo.com">
+        <input id="email" type="email" placeholder="tucorreo@ejemplo.com" [(ngModel)]="email" name="email">
       </div>
 
       <div class="form-group">
         <label for="mensaje">Mensaje</label>
-        <textarea id="mensaje" rows="4" placeholder="¿En qué podemos ayudarte?"></textarea>
+        <textarea id="mensaje" rows="4" placeholder="¿En qué podemos ayudarte?" [(ngModel)]="mensaje" name="mensaje">
+        </textarea>
       </div>
 
-      <button type="submit" class="btn-submit">Enviar Mensaje 🚀</button>
+      <button type="submit" class="btn-submit" [disabled]="enviando">
+        @if (enviando) {
+        Enviando... ⏳
+        } @else {
+        Enviar Mensaje 🚀
+        }
+      </button>
     </form>
 
     <div class="contact-footer">
-      <p>También puedes escribirnos a:<br><b>ficticio@correo.com</b></p>
+      <p>También puedes escribirnos a:<br><b>julianda920&#64;gmail.com</b></p>
     </div>
   </section>
 

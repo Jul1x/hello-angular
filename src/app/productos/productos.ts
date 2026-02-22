@@ -51,13 +51,33 @@ export class ProductosComponent {
     this.carrito = [];
   }
 
-  finalizarCompra() {
-    const total = this.total;
-    // Formatear el dinero para mostrarlo bonito en la alerta
-    const totalFormateado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(total);
+  enviarWhatsApp() {
+    if (this.carrito.length === 0) return;
 
-    alert(`¡Tu pedido está listo! 🚀\n\nTotal a pagar: ${totalFormateado}\n\nGracias por comprar en La Barra Oculta.`);
-    this.clearCart();
+    const numero = '573106060393'; // Tu número con código de país
+
+    // 1. Construir el cuerpo del mensaje
+    let mensaje = '¡Hola, La Barra Oculta! ✨\n';
+    mensaje += 'Me gustaría realizar el siguiente pedido:\n\n';
+
+    this.carrito.forEach(item => {
+      const subtotal = item.producto.precio * item.cantidad;
+      mensaje += `• ${item.cantidad} x ${item.producto.nombre} - ($${subtotal.toLocaleString()})\n`;
+    });
+
+    mensaje += `\n*Total a pagar: $${this.total.toLocaleString()}*\n`;
+    mensaje += '--------------------------\n';
+    mensaje += '🏠 Dirección de entrega: [Escribir aquí]';
+
+    // 2. Codificar para URL
+    const mensajeEncoded = encodeURIComponent(mensaje);
+
+    // 3. Abrir WhatsApp
+    const url = `https://wa.me/${numero}?text=${mensajeEncoded}`;
+    window.open(url, '_blank');
+
+    // Opcional: limpiar el carrito después de enviar
+    // this.clearCart(); 
   }
 
   get total(): number {
