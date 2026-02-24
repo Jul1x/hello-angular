@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Producto, ProductsService } from '../services/products.service';
@@ -15,11 +15,24 @@ interface CartItem {
   templateUrl: './productos.html',
   styleUrls: ['./productos.css']
 })
-export class ProductosComponent {
+export class ProductosComponent implements OnInit {
   private productsService = inject(ProductsService);
 
   productos: Producto[] = this.productsService.getProductos();
   carrito: CartItem[] = [];
+
+  ngOnInit() {
+    // Cargar carrito desde localStorage al iniciar el componente
+    const savedCart = localStorage.getItem('carrito_barra_oculta');
+    if (savedCart) {
+      this.carrito = JSON.parse(savedCart);
+    }
+  }
+
+  private saveCart() {
+    // Guardar el estado actual en localStorage
+    localStorage.setItem('carrito_barra_oculta', JSON.stringify(this.carrito));
+  }
 
   addToCart(product: Producto) {
     const existingItem = this.carrito.find(item => item.producto.nombre === product.nombre);
@@ -28,6 +41,7 @@ export class ProductosComponent {
     } else {
       this.carrito.push({ producto: product, cantidad: 1 });
     }
+    this.saveCart();
   }
 
   updateQuantity(product: Producto, change: number) {
@@ -37,6 +51,7 @@ export class ProductosComponent {
       if (this.carrito[index].cantidad <= 0) {
         this.carrito.splice(index, 1);
       }
+      this.saveCart();
     }
   }
 
@@ -44,11 +59,13 @@ export class ProductosComponent {
     const index = this.carrito.findIndex(item => item.producto.nombre === product.nombre);
     if (index > -1) {
       this.carrito.splice(index, 1);
+      this.saveCart();
     }
   }
 
   clearCart() {
     this.carrito = [];
+    localStorage.removeItem('carrito_barra_oculta');
   }
 
   enviarWhatsApp() {

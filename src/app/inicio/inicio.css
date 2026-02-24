@@ -1,4 +1,18 @@
 /* === HERO SECTION === */
+.hero {
+  /* Imagen de fondo generada */
+  background-image: url('../../assets/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  height: 350px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 
 .hero-overlay {
