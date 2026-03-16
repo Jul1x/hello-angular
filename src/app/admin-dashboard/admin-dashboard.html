@@ -1,0 +1,72 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h2>📦 Panel de Administración</h2>
+    <button class="btn-logout" (click)="logout()">Cerrar Sesión 🚪</button>
+  </div>
+
+  <!-- Botón Agregar -->
+  <div class="actions-bar">
+    <button class="btn-add" (click)="cancelEdit()">
+      @if (showForm) {
+        ❌ Cancelar
+      } @else {
+        ➕ Agregar Producto
+      }
+    </button>
+  </div>
+
+  <!-- Formulario Nuevo/Editar Producto -->
+  @if (showForm) {
+    <div class="product-form">
+      <h3>{{ editingProductId ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="nuevoProducto.nombre" placeholder="Ej: Cerveza Corona x6">
+      </div>
+      <div class="form-group">
+        <label>Precio (sin decimales)</label>
+        <input type="number" [(ngModel)]="nuevoProducto.precio" placeholder="Ej: 25600">
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="nuevoProducto.descripcion" rows="3" placeholder="Breve descripción del producto..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>URL de Imagen</label>
+        <input type="text" [(ngModel)]="nuevoProducto.img" placeholder="Ej: https://mis-imagenes.com/cerveza.jpg o assets/cerveza.jpg">
+      </div>
+      <button class="btn-save" (click)="saveProduct()" [disabled]="saving">
+        @if (saving) {
+          Guardando... ⏳
+        } @else {
+          {{ editingProductId ? 'Actualizar Producto 🔄' : 'Guardar Producto ✅' }}
+        }
+      </button>
+    </div>
+  }
+
+  <!-- Lista de Productos -->
+  <div class="products-list">
+    <h3>Productos Actuales ({{ productos.length }})</h3>
+
+    @if (loading) {
+      <p style="text-align: center; color: #666;">Cargando productos... ⏳</p>
+    } @else if (productos.length === 0) {
+      <p style="text-align: center; color: #666;">No hay productos aún. ¡Agrega el primero!</p>
+    } @else {
+      @for (p of productos; track p.id) {
+        <div class="product-row">
+          <div class="product-info">
+            <b>{{ p.nombre }}</b>
+            <span class="product-price">\${{ p.precio | number:'1.0-0' }}</span>
+          </div>
+          <div class="product-actions">
+            <button class="btn-edit" (click)="editProduct(p)">✏️ Editar</button>
+            <button class="btn-delete" (click)="deleteProduct(p.id!)">🗑️ Eliminar</button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

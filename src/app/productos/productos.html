@@ -1,5 +1,8 @@
 <h2>Productos 🍹</h2>
 
+@if (loading) {
+  <p style="text-align: center; color: #666; padding: 40px;">Cargando productos... ⏳</p>
+} @else {
 <div class="productos-container">
   <!-- Productos -->
   <div class="productos-grid">
@@ -67,5 +70,6 @@
     }
   </div>
 </div>
+}
 
 <a routerLink="/inicio">⬅ Volver al inicio</a>

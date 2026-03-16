@@ -158,3 +158,34 @@
 .link-secondary:hover {
   text-decoration: underline;
 }
+
+/* === RESPONSIVE (MOBILE) === */
+@media (max-width: 768px) {
+  .hero {
+    height: 250px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  
+  .cta-button {
+    padding: 10px 25px;
+    font-size: 1rem;
+  }
+  
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .feature-item {
+    width: 100%;
+    max-width: 300px;
+  }
+}

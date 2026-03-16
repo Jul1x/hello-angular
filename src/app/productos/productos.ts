@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
 import { Producto, ProductsService } from '../services/products.service';
 
 interface CartItem {
@@ -18,19 +18,23 @@ interface CartItem {
 export class ProductosComponent implements OnInit {
   private productsService = inject(ProductsService);
 
-  productos: Producto[] = this.productsService.getProductos();
+  productos: Producto[] = [];
   carrito: CartItem[] = [];
+  loading = true;
 
-  ngOnInit() {
-    // Cargar carrito desde localStorage al iniciar el componente
+  async ngOnInit() {
+    // Cargar carrito desde localStorage
     const savedCart = localStorage.getItem('carrito_barra_oculta');
     if (savedCart) {
       this.carrito = JSON.parse(savedCart);
     }
+
+    // Cargar productos desde Firestore
+    this.productos = await this.productsService.getProductos();
+    this.loading = false;
   }
 
   private saveCart() {
-    // Guardar el estado actual en localStorage
     localStorage.setItem('carrito_barra_oculta', JSON.stringify(this.carrito));
   }
 
@@ -71,12 +75,11 @@ export class ProductosComponent implements OnInit {
   enviarWhatsApp() {
     if (this.carrito.length === 0) return;
 
-    const numero = '573106060393'; // Tu número con código de país
-
-    // 1. Construir el cuerpo del mensaje
+    const numero = '573106060393';
+    
     let mensaje = '¡Hola, La Barra Oculta! ✨\n';
     mensaje += 'Me gustaría realizar el siguiente pedido:\n\n';
-
+    
     this.carrito.forEach(item => {
       const subtotal = item.producto.precio * item.cantidad;
       mensaje += `• ${item.cantidad} x ${item.producto.nombre} - ($${subtotal.toLocaleString()})\n`;
@@ -86,15 +89,9 @@ export class ProductosComponent implements OnInit {
     mensaje += '--------------------------\n';
     mensaje += '🏠 Dirección de entrega: [Escribir aquí]';
 
-    // 2. Codificar para URL
     const mensajeEncoded = encodeURIComponent(mensaje);
-
-    // 3. Abrir WhatsApp
     const url = `https://wa.me/${numero}?text=${mensajeEncoded}`;
     window.open(url, '_blank');
-
-    // Opcional: limpiar el carrito después de enviar
-    // this.clearCart(); 
   }
 
   get total(): number {

@@ -13,10 +13,12 @@
     "@angular/common": "^20.2.3",
     "@angular/compiler": "^20.2.3",
     "@angular/core": "^20.2.3",
+    "@angular/fire": "^20.0.1",
     "@angular/forms": "^20.2.3",
     "@angular/platform-browser": "^20.2.3",
     "@angular/router": "^20.2.3",
     "@emailjs/browser": "^4.4.1",
+    "firebase": "^12.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

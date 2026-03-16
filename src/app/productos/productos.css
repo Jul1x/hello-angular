@@ -248,3 +248,19 @@
   color: #666;
   font-style: italic;
 }
+
+/* === RESPONSIVE (MOBILE) === */
+@media (max-width: 768px) {
+  .productos-container {
+    flex-direction: column-reverse; /* El carrito aparece arriba/abajo dependiendo del gusto, usaremos column-reverse para que los productos salgan primero y el carrito al final */
+    gap: 20px;
+  }
+  
+  .carrito {
+    width: 100%;
+    min-width: unset;
+    position: static; /* Quita el sticky para que no tape la pantalla en scroll */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+}
