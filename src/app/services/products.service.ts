@@ -36,6 +36,7 @@ export interface Producto {
   precio: number;    // Precio en pesos colombianos SIN decimales (ej: 25600)
   descripcion: string; // Texto descriptivo del producto
   img: string;       // URL de la imagen (puede ser local "assets/..." o un link de internet)
+  categoria?: string; // Categoría a la que pertenece (e.g., Cervezas, Vinos, Rones)
 }
 
 @Injectable({

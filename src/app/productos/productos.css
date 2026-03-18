@@ -9,7 +9,7 @@
 /* --- Productos --- */
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   flex: 3;
 }
@@ -263,4 +263,68 @@
     margin-bottom: 20px;
     box-sizing: border-box;
   }
+}
+
+/* ===========================================
+   FILTROS Y BÚSQUEDA (NUEVO)
+   =========================================== */
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: 2px solid #b0c4de;
+  background: #ffffff;
+  color: #333;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: #00008b;
+  box-shadow: 0 0 10px rgba(0, 0, 139, 0.2);
+}
+
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pill {
+  background: #f0f8ff;
+  color: #333;
+  border: 1px solid #b0c4de;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  background: #e0eaf5;
+}
+
+.pill.active {
+  background: #00008b;
+  color: #ffffff;
+  border-color: #00008b;
+  font-weight: bold;
 }

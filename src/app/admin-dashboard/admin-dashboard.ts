@@ -41,8 +41,12 @@ export class AdminDashboardComponent implements OnInit {
     nombre: '',
     precio: 0,
     descripcion: '',
-    img: ''
+    img: '',
+    categoria: ''
   };
+
+  // Lista estática de categorías sugeridas
+  opcionesCategorias = ['Cervezas', 'Vinos', 'Rones', 'Whiskys', 'Aguardientes', 'Otros'];
 
   showForm = false;                       // Controla si el formulario es visible o no
   saving = false;                         // Indica si se está guardando (para desactivar el botón)
@@ -66,12 +70,12 @@ export class AdminDashboardComponent implements OnInit {
    * Si editingProductId es null → estamos CREANDO un producto nuevo
    */
   async saveProduct() {
-    if (!this.nuevoProducto.nombre || !this.nuevoProducto.precio) {
+    if (!this.nuevoProducto.nombre || !this.nuevoProducto.precio || !this.nuevoProducto.categoria) {
       // ⚠️ Popup de advertencia elegante (reemplaza al feo alert() nativo del navegador)
       Swal.fire({
         icon: 'warning',
         title: 'Campos incompletos',
-        text: 'El nombre y precio son obligatorios.',
+        text: 'El nombre, precio y categoría son obligatorios.',
         confirmButtonColor: '#f0a500'
       });
       return;
@@ -122,7 +126,8 @@ export class AdminDashboardComponent implements OnInit {
       nombre: producto.nombre,
       precio: producto.precio,
       descripcion: producto.descripcion,
-      img: producto.img
+      img: producto.img,
+      categoria: producto.categoria || 'Otros' // Valor por defecto para productos antiguos
     };
     this.showForm = true; // Mostrar el formulario con los datos cargados
   }
@@ -137,7 +142,7 @@ export class AdminDashboardComponent implements OnInit {
     if (!this.showForm && !this.editingProductId) {
       this.showForm = true; // Abrir formulario vacío para crear producto nuevo
     } else {
-      this.nuevoProducto = { nombre: '', precio: 0, descripcion: '', img: '' };
+      this.nuevoProducto = { nombre: '', precio: 0, descripcion: '', img: '', categoria: '' };
       this.showForm = false;
       this.editingProductId = null; // Resetear modo edición
     }

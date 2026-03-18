@@ -1,12 +1,33 @@
-<h2>Productos 🍹</h2>
-
 @if (loading) {
   <p style="text-align: center; color: #666; padding: 40px;">Cargando productos... ⏳</p>
 } @else {
+  <!-- BARRAS DE BÚSQUEDA Y CATEGORÍAS 🔍 -->
+  <div class="filters-container">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="🔍 Buscar cerveza, vino...">
+    </div>
+    
+    <div class="category-pills">
+      @for (cat of categorias; track cat) {
+        <button 
+          class="pill" 
+          [class.active]="categoriaSeleccionada === cat" 
+          (click)="categoriaSeleccionada = cat">
+          {{ cat }}
+        </button>
+      }
+    </div>
+  </div>
+
 <div class="productos-container">
   <!-- Productos -->
   <div class="productos-grid">
-    @for (p of productos; track p.nombre) {
+    @if (productosFiltrados.length === 0) {
+      <div style="text-align: center; color: #666; padding: 40px; grid-column: 1 / -1;">
+        No encontramos productos con esos filtros 🕵️‍♂️
+      </div>
+    }
+    @for (p of productosFiltrados; track p.nombre) {
     <div class="producto-card">
       <img [src]="p.img" [alt]="p.nombre">
       <h3>{{ p.nombre }}</h3>

@@ -14,6 +14,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Producto, ProductsService } from '../services/products.service';
+import { FormsModule } from '@angular/forms';
 
 // Interface para cada elemento del carrito (un producto + su cantidad)
 interface CartItem {
@@ -24,7 +25,7 @@ interface CartItem {
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './productos.html',
   styleUrls: ['./productos.css']
 })
@@ -34,6 +35,11 @@ export class ProductosComponent implements OnInit {
   productos: Producto[] = [];  // Lista de productos cargados desde Firestore
   carrito: CartItem[] = [];    // Carrito de compras del cliente (guardado en el navegador)
   loading = true;              // Indicador de carga mientras se descargan los productos
+
+  // Filtros y Búsqueda
+  categorias = ['Todas', 'Cervezas', 'Vinos', 'Rones', 'Whiskys', 'Aguardientes', 'Otros'];
+  categoriaSeleccionada = 'Todas';
+  searchTerm = '';
 
   async ngOnInit() {
     // 1. Recuperar el carrito guardado en el navegador (si existe)
@@ -50,6 +56,33 @@ export class ProductosComponent implements OnInit {
   // Guarda el estado actual del carrito en localStorage (persiste entre sesiones)
   private saveCart() {
     localStorage.setItem('carrito_barra_oculta', JSON.stringify(this.carrito));
+  }
+
+  // GETTER DINÁMICO: Devuelve los productos filtrados según búsqueda y categoría
+  get productosFiltrados(): Producto[] {
+    return this.productos.filter(p => {
+      // 1. Filtro por categoría (Auto-clasificador para productos viejos sin el campo 'categoria')
+      let catProducto = p.categoria;
+      if (!catProducto) {
+        const nom = p.nombre.toLowerCase();
+        if (nom.includes('cerveza')) catProducto = 'Cervezas';
+        else if (nom.includes('vino')) catProducto = 'Vinos';
+        else if (nom.includes('ron')) catProducto = 'Rones';
+        else if (nom.includes('whisky') || nom.includes('whiskey')) catProducto = 'Whiskys';
+        else if (nom.includes('aguardiente')) catProducto = 'Aguardientes';
+        else catProducto = 'Otros';
+      }
+
+      const pasaCategoria = this.categoriaSeleccionada === 'Todas' || catProducto === this.categoriaSeleccionada;
+
+      // 2. Filtro por búsqueda (nombre o descripción) ignorando mayúsculas/minúsculas
+      const termino = this.searchTerm.toLowerCase().trim();
+      const pasaBusqueda = termino === '' || 
+                           p.nombre.toLowerCase().includes(termino) || 
+                           (p.descripcion && p.descripcion.toLowerCase().includes(termino));
+
+      return pasaCategoria && pasaBusqueda;
+    });
   }
 
   // Agrega un producto al carrito (si ya existe, solo incrementa la cantidad)
