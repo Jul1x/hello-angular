@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hello-angular": {
+    "shop-flow": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "hello-angular:build:production"
+              "buildTarget": "shop-flow:build:production"
             },
             "development": {
-              "buildTarget": "hello-angular:build:development"
+              "buildTarget": "shop-flow:build:development"
             }
           },
           "defaultConfiguration": "development"

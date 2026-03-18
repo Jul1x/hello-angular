@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/hello-angular/browser",
+    "public": "dist/shop-flow/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
