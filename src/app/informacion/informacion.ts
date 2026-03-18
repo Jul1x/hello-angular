@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2'; // Librería de popups modernos
 
 @Component({
   selector: 'app-informacion',
@@ -25,7 +26,12 @@ export class InformacionComponent {
 
   async enviarMensaje() {
     if (!this.nombre || !this.email || !this.mensaje) {
-      alert('Por favor completa todos los campos.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor completa todos los campos antes de enviar.',
+        confirmButtonColor: '#f0a500'
+      });
       return;
     }
 

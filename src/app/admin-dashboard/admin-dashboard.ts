@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';   // Necesario para [(ngModel)] en
 import { CommonModule } from '@angular/common'; // Necesario para @if, @for, pipes como | number
 import { AuthService } from '../services/auth.service';
 import { ProductsService, Producto } from '../services/products.service';
+import Swal from 'sweetalert2'; // Librería de popups modernos y elegantes
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -66,7 +67,13 @@ export class AdminDashboardComponent implements OnInit {
    */
   async saveProduct() {
     if (!this.nuevoProducto.nombre || !this.nuevoProducto.precio) {
-      alert('El nombre y precio son obligatorios.');
+      // ⚠️ Popup de advertencia elegante (reemplaza al feo alert() nativo del navegador)
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'El nombre y precio son obligatorios.',
+        confirmButtonColor: '#f0a500'
+      });
       return;
     }
 
@@ -81,9 +88,24 @@ export class AdminDashboardComponent implements OnInit {
       }
       this.cancelEdit();        // Limpia el formulario y lo oculta
       await this.loadProducts(); // Recarga la lista para ver los cambios
+
+      // ✅ Popup de éxito con animación de chulo verde
+      Swal.fire({
+        icon: 'success',
+        title: this.editingProductId ? '¡Producto actualizado!' : '¡Producto guardado!',
+        text: 'Los cambios ya están disponibles en la tienda.',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error('Error guardando producto:', err);
-      alert('Error al guardar el producto.');
+      // ❌ Popup de error elegante
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo guardar el producto. Intenta de nuevo.',
+        confirmButtonColor: '#d33'
+      });
     } finally {
       this.saving = false; // Reactiva el botón de guardar sin importar si hubo error o no
     }
@@ -121,16 +143,42 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  // ELIMINAR PRODUCTO: Pide confirmación y luego borra el producto de Firestore
+  // ELIMINAR PRODUCTO: Pide confirmación con popup elegante y luego borra de Firestore
   async deleteProduct(id: string) {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    // 🗑️ Popup de confirmación con botones personalizados (reemplaza al feo confirm() nativo)
+    const result = await Swal.fire({
+      title: '¿Eliminar producto?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return; // Si el usuario canceló, no hacer nada
 
     try {
       await this.productsService.deleteProducto(id); // Borra de la nube
       await this.loadProducts();                      // Recarga la lista
+
+      // ✅ Popup de confirmación de eliminación
+      Swal.fire({
+        icon: 'success',
+        title: '¡Eliminado!',
+        text: 'El producto fue eliminado correctamente.',
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (err) {
       console.error('Error eliminando producto:', err);
-      alert('Error al eliminar el producto.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo eliminar el producto.',
+        confirmButtonColor: '#d33'
+      });
     }
   }
 
