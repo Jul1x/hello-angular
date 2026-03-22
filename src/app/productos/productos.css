@@ -328,3 +328,34 @@
   border-color: #00008b;
   font-weight: bold;
 }
+
+/* ===========================================
+   SKELETON LOADERS (ANIMACIÓN DE CARGA)
+   =========================================== */
+.skeleton-box {
+  background: #e0e0e0;
+  border-radius: 4px;
+  animation: pulse-bg 1.5s infinite ease-in-out;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  flex: 3;
+}
+
+.skeleton-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes pulse-bg {
+  0% { background-color: #eee; }
+  50% { background-color: #f5f5f5; }
+  100% { background-color: #eee; }
+}
