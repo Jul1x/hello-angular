@@ -12,7 +12,7 @@
  * 🔑 IMPORTANTE: La configuración de Firebase (apiKey, projectId, etc.) viene del archivo
  * environment.ts, que contiene las "credenciales" de conexión a los servidores de Google.
  */
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
@@ -20,6 +20,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),                                              // Sistema de navegación entre páginas
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), // Conexión a Firebase (Google Cloud)
     provideAuth(() => getAuth()),                                        // Sistema de autenticación (login admin)
-    provideFirestore(() => getFirestore())                                // Base de datos en la nube (Firestore)
+    provideFirestore(() => getFirestore()), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })                                // Base de datos en la nube (Firestore)
   ]
 };
