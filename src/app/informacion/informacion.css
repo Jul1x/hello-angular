@@ -149,13 +149,30 @@
     color: #666;
 }
 
-/* Enlace volver */
-.back-link {
-    color: #4A3728;
-    text-decoration: none;
-    font-weight: bold;
+/* === BOTÓN VOLVER AL INICIO === */
+.back-link-container {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.btn-back {
+    display: inline-block;
+    background-color: transparent;
+    color: #4A3728;
+    border: 2px solid #4A3728;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #4A3728;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74, 55, 40, 0.2);
 }

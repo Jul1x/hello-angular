@@ -63,9 +63,11 @@
     <div class="producto-card">
       <img [src]="p.img" [alt]="p.nombre">
       <h3>{{ p.nombre }}</h3>
-      <p>{{ p.descripcion }}</p>
-      <p><b>Precio: {{ p.precio | currency:'USD':'symbol':'1.0-0' }}</b></p>
-      <button (click)="addToCart(p)">Agregar al Carrito 🛒</button>
+      <p class="producto-desc">{{ p.descripcion }}</p>
+      <div class="producto-footer">
+        <p class="producto-precio"><b>Precio: {{ p.precio | currency:'COP':'$':'1.0-0' }}</b></p>
+        <button class="btn-comprar" (click)="addToCart(p)">Agregar al Carrito 🛒</button>
+      </div>
     </div>
     }
   </div>
@@ -85,7 +87,7 @@
       <li>
         <div class="item-info">
           <b>{{ item.producto.nombre }}</b>
-          <span>{{ item.producto.precio | currency:'USD':'symbol':'1.0-0' }} x {{ item.cantidad }}</span>
+          <span>{{ item.producto.precio | currency:'COP':'$':'1.0-0' }} x {{ item.cantidad }}</span>
         </div>
 
         <div class="item-controls">
@@ -96,13 +98,13 @@
         </div>
 
         <div class="item-subtotal">
-          Subtotal: {{ item.producto.precio * item.cantidad | currency:'USD':'symbol':'1.0-0' }}
+          Subtotal: {{ item.producto.precio * item.cantidad | currency:'COP':'$':'1.0-0' }}
         </div>
       </li>
       }
     </ul>
     <div class="total-section">
-      <p><b>Total: {{ total | currency:'USD':'symbol':'1.0-0' }}</b></p>
+      <p><b>Total: {{ total | currency:'COP':'$':'1.0-0' }}</b></p>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <button class="btn-whatsapp" (click)="enviarWhatsApp()">
@@ -125,4 +127,6 @@
 </div>
 }
 
-<a routerLink="/inicio">⬅ Volver al inicio</a>
+<div class="back-link-container">
+  <a routerLink="/inicio" class="btn-back">⬅ Volver al inicio</a>
+</div>

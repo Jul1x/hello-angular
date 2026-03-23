@@ -228,3 +228,23 @@
     padding: 15px;
   }
 }
+
+/* ===========================================
+   VALIDACIÓN VISUAL DE FORMULARIOS ⛔
+   =========================================== */
+.is-invalid {
+  border-color: #dc3545 !important;
+  background-color: #fff8f8;
+}
+
+.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+}
+
+.error-text {
+  display: block;
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  font-weight: bold;
+}
