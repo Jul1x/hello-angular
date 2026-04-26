@@ -1,23 +1,42 @@
+/* === HOST CONFIG (Footer pegajoso al fondo) === */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Ocupa al menos toda la altura de la pantalla */
+}
+
 /* === HEADER === */
 header {
-  display: flex; /* Activa Flexbox para alinear elementos */
-  justify-content: space-between; /* Espacia el título y la navegación */
-  align-items: center; /* Centra verticalmente los elementos */
-  padding: 15px 40px; /* Más padding para un look más espacioso */
-  background-color: #4A3728; /* Un tono café oscuro para un look cálido */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
-  margin: 10px 20px; /* Añade margen para que el redondeo sea visible */
-  
-  border-radius: 15px;/* Redondea todas las esquinas */
+  display: flex;
+  /* Activa Flexbox para alinear elementos */
+  justify-content: space-between;
+  /* Espacia el título y la navegación */
+  align-items: center;
+  /* Centra verticalmente los elementos */
+  padding: 15px 40px;
+  /* Más padding para un look más espacioso */
+  background-color: #4A3728;
+  /* Un tono café oscuro para un look cálido */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  /* Sombra para dar profundidad */
+  margin: 10px 20px;
+  /* Añade margen para que el redondeo sea visible */
+
+  border-radius: 15px;
+  /* Redondea todas las esquinas */
 }
 
 /* Estilo para el título principal */
 header h1 {
-  margin: 0; /* Quita el margen por defecto del h1 */
+  margin: 0;
+  /* Quita el margen por defecto del h1 */
   font-size: 1.8rem;
-  color: #ffffff; /* Usa el color de acento de los botones */
+  color: #ffffff;
+  /* Usa el color de acento de los botones */
   font-weight: 700;
-  letter-spacing: 1px; /* Un poco de espacio entre letras */
+  letter-spacing: 1px;
+  /* Un poco de espacio entre letras */
 }
 
 
@@ -26,46 +45,102 @@ header nav a {
   background-color: #ffc107;
   color: #333;
   padding: 12px 20px;
-  margin: 0 5px; /* Espacio entre los botones */
-  border-radius: 5px; /* Bordes redondeados para un look de "píldora" */
-  text-decoration: none; /* Quita el subrayado de los enlaces */
+  margin: 0 5px;
+  /* Espacio entre los botones */
+  border-radius: 5px;
+  /* Bordes redondeados para un look de "píldora" */
+  text-decoration: none;
+  /* Quita el subrayado de los enlaces */
   font-weight: 500;
   display: inline-block;
-  transition: all 0.3s ease; /* Transición suave para todos los efectos */
+  transition: all 0.3s ease;
+  /* Transición suave para todos los efectos */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Efecto al pasar el mouse por encima (hover) */
 header nav a:hover {
-  background-color: #e0a800; /* Un amarillo más oscuro */
-  transform: translateY(-3px); /* Efecto de "levantamiento" */
+  background-color: #e0a800;
+  /* Un amarillo más oscuro */
+  transform: translateY(-3px);
+  /* Efecto de "levantamiento" */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilo para el enlace activo (la página actual) */
 header nav a.active {
-  background-color: #ffffff; /* Fondo blanco para el activo */
-  color: #333; /* Texto */
-  border: 2px solid #ffc107; /* Borde  */
-  box-shadow: none; /* Quitar la sombra para que parezca presionado */
+  background-color: #ffffff;
+  /* Fondo blanco para el activo */
+  color: #333;
+  /* Texto */
+  border: 2px solid #ffc107;
+  /* Borde  */
+  box-shadow: none;
+  /* Quitar la sombra para que parezca presionado */
   transform: translateY(0);
+}
+
+/* Badge del carrito (circulito rojo con número) */
+header nav a {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e53935;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(229, 57, 53, 0.4);
+  animation: badgePop 0.3s ease-out;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+
+  70% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 main {
   padding: 20px;
-  background-color: #f4f4f4; /* Un fondo gris muy claro para el contenido */
+  background-color: #f4f4f4;
+  /* Un fondo gris muy claro para el contenido */
+  flex: 1;
+  /* Esto hace que el main crezca y empuje el footer hacia el fondo */
 }
 
 /* === FOOTER === */
 footer {
   text-align: center;
-  padding: 8px; /* Más padding vertical */
-  background-color: #4A3728; /* Mismo color que el header para consistencia */
-  color: #a0a0a0; /* Un gris claro para que no sea tan prominente */
-  font-size: 1.1rem; /* Aumentamos el tamaño de la fuente para que sea más legible */
-  margin: 10px 20px; /* Añade margen para que el redondeo sea visible */
-  
-  border-radius: 15px;/* Redondea todas las esquinas */
+  padding: 8px;
+  /* Más padding vertical */
+  background-color: #4A3728;
+  /* Mismo color que el header para consistencia */
+  color: #a0a0a0;
+  /* Un gris claro para que no sea tan prominente */
+  font-size: 1.1rem;
+  /* Aumentamos el tamaño de la fuente para que sea más legible */
+  margin: 10px 20px;
+  /* Añade margen para que el redondeo sea visible */
+
+  border-radius: 15px;
+  /* Redondea todas las esquinas */
 }
 
 /* === RESPONSIVE (MOBILE) === */
@@ -76,19 +151,19 @@ footer {
     margin: 10px;
     gap: 15px;
   }
-  
+
   header h1 {
     font-size: 1.5rem;
     text-align: center;
   }
-  
+
   header nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
   }
-  
+
   header nav a {
     margin: 0;
     padding: 10px 15px;

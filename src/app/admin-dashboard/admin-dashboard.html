@@ -2,8 +2,31 @@
   <!-- Header -->
   <div class="dashboard-header">
     <h2>📦 Panel de Administración</h2>
-    <button class="btn-logout" (click)="logout()">Cerrar Sesión 🚪</button>
+    <div class="header-actions">
+      <div class="view-toggles">
+        <button [class.active]="viewMode === 'productos'" (click)="switchView('productos')">📦 Productos</button>
+        <button [class.active]="viewMode === 'pedidos'" (click)="switchView('pedidos')">🧾 Pedidos</button>
+      </div>
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión 🚪</button>
+    </div>
   </div>
+
+  @if (viewMode === 'productos') {
+  <!-- Estadísticas Rápidas -->
+  @if (!loading) {
+    <div class="stats-bar animate-in">
+      <div class="stat-card" [class.active-filter]="adminCategoriaFiltro === 'Todas'" (click)="filtrarPorCategoria('Todas')">
+        <span class="stat-number">{{ productos.length }}</span>
+        <span class="stat-label">Total Productos</span>
+      </div>
+      @for (cat of opcionesCategorias; track cat) {
+        <div class="stat-card stat-small" [class.active-filter]="adminCategoriaFiltro === cat" (click)="filtrarPorCategoria(cat)">
+          <span class="stat-number">{{ getCountByCategoria(cat) }}</span>
+          <span class="stat-label">{{ cat }}</span>
+        </div>
+      }
+    </div>
+  }
 
   <!-- Botón Agregar -->
   <div class="actions-bar">
@@ -21,56 +44,69 @@
     <form class="product-form" #productForm="ngForm" (ngSubmit)="saveProduct()">
       <h3>{{ editingProductId ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
       
-      <div class="form-group">
-        <label>Nombre *</label>
-        <input type="text" name="nombre" [(ngModel)]="nuevoProducto.nombre" required #nombre="ngModel"
-               [class.is-invalid]="nombre.invalid && (nombre.dirty || nombre.touched)"
-               placeholder="Ej: Cerveza Corona x6">
-        @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
-          <small class="error-text">El nombre es obligatorio.</small>
+      <div class="form-layout">
+        <!-- Columna izquierda: Campos del formulario -->
+        <div class="form-fields">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" name="nombre" [(ngModel)]="nuevoProducto.nombre" required #nombre="ngModel"
+                   [class.is-invalid]="nombre.invalid && (nombre.dirty || nombre.touched)"
+                   placeholder="Ej: Cerveza Corona x6">
+            @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
+              <small class="error-text">El nombre es obligatorio.</small>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label>Precio * (sin decimales)</label>
+            <input type="number" name="precio" [(ngModel)]="nuevoProducto.precio" required min="100" #precio="ngModel"
+                   [class.is-invalid]="precio.invalid && (precio.dirty || precio.touched)"
+                   placeholder="Ej: 25600">
+            @if (precio.invalid && (precio.dirty || precio.touched)) {
+              <small class="error-text">El precio es obligatorio y debe ser mayor a 0.</small>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea name="descripcion" [(ngModel)]="nuevoProducto.descripcion" rows="3" placeholder="Breve descripción del producto..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select name="categoria" [(ngModel)]="nuevoProducto.categoria" required #categoria="ngModel"
+                    [class.is-invalid]="categoria.invalid && (categoria.dirty || categoria.touched)">
+              <option value="" disabled selected>Selecciona una categoría...</option>
+              @for (cat of opcionesCategorias; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+            @if (categoria.invalid && (categoria.dirty || categoria.touched)) {
+              <small class="error-text">Debes seleccionar una categoría.</small>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label>URL de Imagen *</label>
+            <input type="text" name="img" [(ngModel)]="nuevoProducto.img" required #img="ngModel"
+                   [class.is-invalid]="img.invalid && (img.dirty || img.touched)"
+                   placeholder="Ej: https://mis-imagenes.com/cerveza.jpg o assets/cerveza.jpg">
+            @if (img.invalid && (img.dirty || img.touched)) {
+              <small class="error-text">La URL de la imagen es obligatoria.</small>
+            }
+          </div>
+        </div>
+
+        <!-- Columna derecha: Vista previa -->
+        @if (nuevoProducto.img) {
+          <div class="img-preview">
+            <label>Vista Previa</label>
+            <img [src]="nuevoProducto.img" alt="Vista previa" (error)="$event.target.style.display='none'">
+          </div>
         }
       </div>
       
-      <div class="form-group">
-        <label>Precio * (sin decimales)</label>
-        <input type="number" name="precio" [(ngModel)]="nuevoProducto.precio" required min="100" #precio="ngModel"
-               [class.is-invalid]="precio.invalid && (precio.dirty || precio.touched)"
-               placeholder="Ej: 25600">
-        @if (precio.invalid && (precio.dirty || precio.touched)) {
-          <small class="error-text">El precio es obligatorio y debe ser mayor a 0.</small>
-        }
-      </div>
-      
-      <div class="form-group">
-        <label>Descripción</label>
-        <textarea name="descripcion" [(ngModel)]="nuevoProducto.descripcion" rows="3" placeholder="Breve descripción del producto..."></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label>Categoría *</label>
-        <select name="categoria" [(ngModel)]="nuevoProducto.categoria" required #categoria="ngModel"
-                [class.is-invalid]="categoria.invalid && (categoria.dirty || categoria.touched)">
-          <option value="" disabled selected>Selecciona una categoría...</option>
-          @for (cat of opcionesCategorias; track cat) {
-            <option [value]="cat">{{ cat }}</option>
-          }
-        </select>
-        @if (categoria.invalid && (categoria.dirty || categoria.touched)) {
-          <small class="error-text">Debes seleccionar una categoría.</small>
-        }
-      </div>
-      
-      <div class="form-group">
-        <label>URL de Imagen *</label>
-        <input type="text" name="img" [(ngModel)]="nuevoProducto.img" required #img="ngModel"
-               [class.is-invalid]="img.invalid && (img.dirty || img.touched)"
-               placeholder="Ej: https://mis-imagenes.com/cerveza.jpg o assets/cerveza.jpg">
-        @if (img.invalid && (img.dirty || img.touched)) {
-          <small class="error-text">La URL de la imagen es obligatoria.</small>
-        }
-      </div>
-      
-      <!-- El botón se deshabilita si Angular detecta que falta un campo (productForm.invalid) -->
+      <!-- Botón guardar -->
       <button type="submit" class="btn-save" [disabled]="saving || productForm.invalid">
         @if (saving) {
           Guardando... ⏳
@@ -81,23 +117,48 @@
     </form>
   }
 
-  <!-- Lista de Productos -->
+  <!-- Buscador interno del admin -->
   <div class="products-list">
-    <h3>Productos Actuales ({{ productos.length }})</h3>
+    <div class="list-header">
+      <h3>Productos Actuales ({{ productosFiltradosAdmin.length }})</h3>
+      <div class="admin-search">
+        <input type="text" [(ngModel)]="adminSearchTerm" placeholder="🔍 Buscar producto...">
+      </div>
+    </div>
 
     @if (loading) {
       <p style="text-align: center; color: #666;">Cargando productos... ⏳</p>
-    } @else if (productos.length === 0) {
-      <p style="text-align: center; color: #666;">No hay productos aún. ¡Agrega el primero!</p>
+    } @else if (productosFiltradosAdmin.length === 0) {
+      @if (adminSearchTerm) {
+        <p style="text-align: center; color: #666;">No se encontraron productos con "{{ adminSearchTerm }}" 🔍</p>
+      } @else {
+        <p style="text-align: center; color: #666;">No hay productos aún. ¡Agrega el primero!</p>
+      }
     } @else {
-      @for (p of productos; track p.id) {
-        <div class="product-row">
+      @for (p of productosFiltradosAdmin; track p.id) {
+        <div class="product-row" [class.is-paused]="p.activo === false">
+          <!-- Thumbnail -->
+          <img class="product-thumb" [src]="p.img" [alt]="p.nombre" loading="lazy" (error)="$event.target.style.display='none'">
           <div class="product-info">
-            <b>{{ p.nombre }}</b>
-            <span style="font-size: 12px; color: #888; margin-left: 10px; padding: 2px 6px; background: #eee; border-radius: 4px;">{{ p.categoria || 'Sin Categoría' }}</span>
+            <b>
+              {{ p.nombre }}
+              @if (p.activo === false) { <span class="badge-paused">🚫 Pausado</span> }
+            </b>
+            <span class="category-badge">{{ p.categoria || 'Sin Categoría' }}</span>
             <span class="product-price">\${{ p.precio | number:'1.0-0' }}</span>
+            <p style="font-size: 11px; color: #999; margin: 4px 0 0 0;">
+              👤 
+              @if (p.editadoPor) {
+                Editado por: {{ p.editadoPor }}
+              } @else if (p.creadoPor) {
+                Agregado por: {{ p.creadoPor }}
+              }
+            </p>
           </div>
           <div class="product-actions">
+            <button [class]="p.activo === false ? 'btn-activate' : 'btn-pause'" (click)="toggleEstadoProducto(p)">
+              {{ p.activo === false ? '👀 Activar' : '🚫 Pausar' }}
+            </button>
             <button class="btn-edit" (click)="editProduct(p)">✏️ Editar</button>
             <button class="btn-delete" (click)="deleteProduct(p.id!)">🗑️ Eliminar</button>
           </div>
@@ -105,4 +166,39 @@
       }
     }
   </div>
+  }
+
+  @if (viewMode === 'pedidos') {
+    <div class="products-list animate-in">
+      <div class="list-header">
+        <h3>Historial de Pedidos ({{ pedidos.length }})</h3>
+        <p style="color: #666; font-size: 0.9rem; margin: 5px 0 0 0;">Estos pedidos se registraron justo antes de abrir WhatsApp.</p>
+      </div>
+
+      @if (loadingPedidos) {
+        <p style="text-align: center; color: #666; padding: 20px;">Cargando historial... ⏳</p>
+      } @else if (pedidos.length === 0) {
+        <p style="text-align: center; color: #666; padding: 20px;">Aún no tienes pedidos registrados en el sistema. 🛒</p>
+      } @else {
+        <div class="orders-grid">
+          @for (pedido of pedidos; track pedido.id) {
+            <div class="order-card">
+              <div class="order-header">
+                <span class="order-date">📅 {{ pedido.fecha | date:'medium' }}</span>
+                <span class="order-total">\${{ pedido.total | number:'1.0-0' }}</span>
+              </div>
+              <ul class="order-items">
+                @for (item of pedido.items; track item.nombre) {
+                  <li>
+                    <span>{{ item.cantidad }}x {{ item.nombre }}</span>
+                    <span>\${{ (item.precio * item.cantidad) | number:'1.0-0' }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
 </div>

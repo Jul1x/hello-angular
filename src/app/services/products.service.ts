@@ -37,6 +37,13 @@ export interface Producto {
   descripcion: string; // Texto descriptivo del producto
   img: string;       // URL de la imagen (puede ser local "assets/..." o un link de internet)
   categoria?: string; // Categoría a la que pertenece (e.g., Cervezas, Vinos, Rones)
+  activo?: boolean;   // Controla si el producto se muestra al público (false = pausado/agotado)
+  
+  // Campos de auditoría (Registro de quién creó/editó)
+  creadoPor?: string;
+  fechaCreacion?: string;
+  editadoPor?: string;
+  fechaEdicion?: string;
 }
 
 @Injectable({

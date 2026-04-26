@@ -6,10 +6,10 @@
   background-position: center;
   background-repeat: no-repeat;
 
-  height: 350px;
+  height: 290px; /* Reducido para que ocupe menos espacio vertical */
   border-radius: 15px;
   overflow: hidden;
-  margin-bottom: 40px;
+  margin-bottom: 25px; /* Menos espacio hacia abajo */
   position: relative;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -36,9 +36,9 @@
 }
 
 .hero-content p {
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Ligeramente más pequeño */
   color: #f0f0f0;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* Menos margen antes del botón */
   font-weight: 300;
 }
 
@@ -68,33 +68,36 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 50px;
+  gap: 15px;
+  margin-bottom: 20px; /* Reducido drásticamente */
   text-align: center;
 }
 
 .feature-item {
   flex: 1;
   min-width: 200px;
-  padding: 20px;
+  padding: 15px; /* Menos padding interno */
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .feature-icon {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Ícono un poco más pequeño */
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .feature-item h3 {
   color: #4A3728;
-  margin: 10px 0;
+  margin: 8px 0;
+  font-size: 1.1rem;
 }
 
 .feature-item p {
   color: #666;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 /* === DESTACADOS === */
@@ -180,26 +183,26 @@
   .hero {
     height: 250px;
   }
-  
+
   .hero-content h1 {
     font-size: 2.2rem;
   }
-  
+
   .hero-content p {
     font-size: 1.1rem;
     margin-bottom: 20px;
   }
-  
+
   .cta-button {
     padding: 10px 25px;
     font-size: 1rem;
   }
-  
+
   .features {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .feature-item {
     width: 100%;
     max-width: 300px;

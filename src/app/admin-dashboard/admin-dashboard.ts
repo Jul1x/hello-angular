@@ -18,7 +18,9 @@ import { FormsModule } from '@angular/forms';   // Necesario para [(ngModel)] en
 import { CommonModule } from '@angular/common'; // Necesario para @if, @for, pipes como | number
 import { AuthService } from '../services/auth.service';
 import { ProductsService, Producto } from '../services/products.service';
+import { OrdersService, Pedido } from '../services/orders.service';
 import Swal from 'sweetalert2'; // Librería de popups modernos y elegantes
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -31,7 +33,13 @@ export class AdminDashboardComponent implements OnInit {
   // Inyección de servicios usando el patrón moderno de Angular (inject)
   private authService = inject(AuthService);       // Para manejar logout
   private productsService = inject(ProductsService); // Para operaciones CRUD en Firestore
+  private ordersService = inject(OrdersService);     // Para ver historial de pedidos
   private router = inject(Router);                   // Para redirigir al login
+  private authFirebase = inject(Auth);               // Obtener usuario logueado
+
+  viewMode: 'productos' | 'pedidos' = 'productos'; // Controla qué vista mostrar
+  pedidos: Pedido[] = [];     // Lista de pedidos guardados
+  loadingPedidos = false;     // Indicador de carga para pedidos
 
   productos: Producto[] = []; // Lista de productos cargados desde Firestore
   loading = true;             // Indica si se están cargando los productos (muestra "Cargando...")
@@ -51,6 +59,8 @@ export class AdminDashboardComponent implements OnInit {
   showForm = false;                       // Controla si el formulario es visible o no
   saving = false;                         // Indica si se está guardando (para desactivar el botón)
   editingProductId: string | null = null; // Si tiene un ID, estamos EDITANDO; si es null, estamos CREANDO
+  adminSearchTerm = '';                   // Término de búsqueda interno del admin
+  adminCategoriaFiltro = 'Todas';         // Categoría seleccionada en los botones superiores
 
   // ngOnInit: Se ejecuta automáticamente cuando el componente se carga por primera vez
   ngOnInit() {
@@ -62,6 +72,71 @@ export class AdminDashboardComponent implements OnInit {
     this.loading = true;
     this.productos = await this.productsService.getProductos();
     this.loading = false;
+  }
+
+  // Productos filtrados por búsqueda del admin y categoría
+  get productosFiltradosAdmin(): Producto[] {
+    let filtrados = this.productos;
+
+    // 1. Filtro por categoría clickeada en las tarjetas
+    if (this.adminCategoriaFiltro !== 'Todas') {
+      filtrados = filtrados.filter(p => (p.categoria || 'Otros') === this.adminCategoriaFiltro);
+    }
+
+    // 2. Filtro por texto de búsqueda
+    if (this.adminSearchTerm.trim()) {
+      const termino = this.adminSearchTerm.toLowerCase().trim();
+      filtrados = filtrados.filter(p =>
+        p.nombre.toLowerCase().includes(termino) ||
+        (p.categoria && p.categoria.toLowerCase().includes(termino))
+      );
+    }
+    
+    return filtrados;
+  }
+
+  // Método para cambiar la categoría al hacer clic en las tarjetas
+  filtrarPorCategoria(cat: string) {
+    this.adminCategoriaFiltro = cat;
+  }
+
+  // Cuenta cuántos productos hay por categoría (para las estadísticas)
+  getCountByCategoria(cat: string): number {
+    return this.productos.filter(p => (p.categoria || 'Otros') === cat).length;
+  }
+
+  // Cambia la vista entre productos y pedidos
+  async switchView(mode: 'productos' | 'pedidos') {
+    this.viewMode = mode;
+    if (mode === 'pedidos' && this.pedidos.length === 0) {
+      this.loadingPedidos = true;
+      this.pedidos = await this.ordersService.getPedidos();
+      this.loadingPedidos = false;
+    }
+  }
+
+  // PAUSAR / ACTIVAR PRODUCTO
+  async toggleEstadoProducto(producto: Producto) {
+    const estaPausado = producto.activo === false; // Si es undefined, asumimos que está activo
+    const nuevoEstado = estaPausado ? true : false;
+    
+    try {
+      await this.productsService.updateProducto(producto.id!, { activo: nuevoEstado });
+      producto.activo = nuevoEstado; // Actualizamos localmente para no recargar todo
+      
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 2000,
+        background: '#4A3728',
+        color: '#fff'
+      });
+      Toast.fire({ icon: 'success', title: nuevoEstado ? 'Producto Activado ✅' : 'Producto Pausado 🚫' });
+    } catch (err) {
+      console.error('Error cambiando estado:', err);
+      Swal.fire('Error', 'No se pudo cambiar el estado del producto', 'error');
+    }
   }
 
   /**
@@ -83,12 +158,25 @@ export class AdminDashboardComponent implements OnInit {
 
     this.saving = true;
     try {
+      const correoActual = this.authFirebase.currentUser?.email || 'Admin Desconocido';
+      const fechaActual = new Date().toISOString();
+
       if (this.editingProductId) {
         // MODO EDICIÓN: Actualiza el producto existente en Firestore
-        await this.productsService.updateProducto(this.editingProductId, this.nuevoProducto);
+        const productoEditado = {
+          ...this.nuevoProducto,
+          editadoPor: correoActual,
+          fechaEdicion: fechaActual
+        };
+        await this.productsService.updateProducto(this.editingProductId, productoEditado);
       } else {
         // MODO CREACIÓN: Agrega un producto nuevo a Firestore
-        await this.productsService.addProducto(this.nuevoProducto);
+        const productoNuevo = {
+          ...this.nuevoProducto,
+          creadoPor: correoActual,
+          fechaCreacion: fechaActual
+        };
+        await this.productsService.addProducto(productoNuevo);
       }
       this.cancelEdit();        // Limpia el formulario y lo oculta
       await this.loadProducts(); // Recarga la lista para ver los cambios
@@ -130,6 +218,10 @@ export class AdminDashboardComponent implements OnInit {
       categoria: producto.categoria || 'Otros' // Valor por defecto para productos antiguos
     };
     this.showForm = true; // Mostrar el formulario con los datos cargados
+    // Esperar a que Angular dibuje el formulario y hacer scroll al inicio del formulario
+    setTimeout(() => {
+      document.querySelector('.actions-bar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
   /**
@@ -141,6 +233,9 @@ export class AdminDashboardComponent implements OnInit {
   cancelEdit() {
     if (!this.showForm && !this.editingProductId) {
       this.showForm = true; // Abrir formulario vacío para crear producto nuevo
+      setTimeout(() => {
+        document.querySelector('.actions-bar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } else {
       this.nuevoProducto = { nombre: '', precio: 0, descripcion: '', img: '', categoria: '' };
       this.showForm = false;

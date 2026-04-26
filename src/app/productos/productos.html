@@ -1,67 +1,65 @@
 @if (loading) {
-  <!-- BARRAS DE BÚSQUEDA Y CATEGORÍAS (SKELETON) -->
-  <div class="filters-container" style="opacity: 0.8;">
-    <div class="skeleton-box" style="height: 44px; border-radius: 25px; border: none; max-width: 500px; width: 100%;"></div>
-    <div class="category-pills" style="gap: 10px;">
-      @for (i of [1,2,3,4,5,6]; track i) {
-        <div class="skeleton-box" style="width: 80px; height: 36px; border-radius: 20px;"></div>
-      }
+<!-- BARRAS DE BÚSQUEDA Y CATEGORÍAS (SKELETON) -->
+<div class="filters-container" style="opacity: 0.8;">
+  <div class="skeleton-box" style="height: 44px; border-radius: 25px; border: none; max-width: 500px; width: 100%;">
+  </div>
+  <div class="category-pills" style="gap: 10px;">
+    @for (i of [1,2,3,4,5,6]; track i) {
+    <div class="skeleton-box" style="width: 80px; height: 36px; border-radius: 20px;"></div>
+    }
+  </div>
+</div>
+
+<div class="productos-container">
+  <!-- Productos Grid (Skeleton) -->
+  <div class="skeleton-grid">
+    @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+    <div class="skeleton-card">
+      <div class="skeleton-box" style="width: 100%; height: 150px; border-radius: 8px; margin-bottom: 10px;"></div>
+      <div class="skeleton-box" style="height: 24px; width: 70%; margin: 10px auto;"></div>
+      <div class="skeleton-box" style="height: 16px; width: 90%; margin: 5px auto;"></div>
+      <div class="skeleton-box" style="height: 16px; width: 80%; margin: 5px auto;"></div>
+      <div class="skeleton-box" style="height: 20px; width: 50%; margin: 15px auto;"></div>
+      <div class="skeleton-box" style="height: 35px; width: 100%; margin-top: 10px; border-radius: 5px;"></div>
     </div>
+    }
+  </div>
+  <!-- Carrito (Skeleton) -->
+  <div class="carrito" style="opacity: 0.6;">
+    <h3 style="display: flex; justify-content: space-between;">Carrito 🛒</h3>
+    <div class="skeleton-box" style="height: 80px; border-radius: 8px; margin-bottom: 20px;"></div>
+    <div class="skeleton-box" style="height: 30px; margin-bottom: 15px;"></div>
+    <div class="skeleton-box" style="height: 40px; border-radius: 8px; margin-bottom: 10px;"></div>
+    <div class="skeleton-box" style="height: 40px; border-radius: 8px;"></div>
+  </div>
+</div>
+} @else {
+<!-- BARRAS DE BÚSQUEDA Y CATEGORÍAS 🔍 -->
+<div class="filters-container">
+  <div class="search-box">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="🔍 Buscar cerveza, vino...">
   </div>
 
-  <div class="productos-container">
-    <!-- Productos Grid (Skeleton) -->
-    <div class="skeleton-grid">
-      @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
-        <div class="skeleton-card">
-          <div class="skeleton-box" style="width: 100%; height: 150px; border-radius: 8px; margin-bottom: 10px;"></div>
-          <div class="skeleton-box" style="height: 24px; width: 70%; margin: 10px auto;"></div>
-          <div class="skeleton-box" style="height: 16px; width: 90%; margin: 5px auto;"></div>
-          <div class="skeleton-box" style="height: 16px; width: 80%; margin: 5px auto;"></div>
-          <div class="skeleton-box" style="height: 20px; width: 50%; margin: 15px auto;"></div>
-          <div class="skeleton-box" style="height: 35px; width: 100%; margin-top: 10px; border-radius: 5px;"></div>
-        </div>
-      }
-    </div>
-    <!-- Carrito (Skeleton) -->
-    <div class="carrito" style="opacity: 0.6;">
-      <h3 style="display: flex; justify-content: space-between;">Carrito 🛒</h3>
-      <div class="skeleton-box" style="height: 80px; border-radius: 8px; margin-bottom: 20px;"></div>
-      <div class="skeleton-box" style="height: 30px; margin-bottom: 15px;"></div>
-      <div class="skeleton-box" style="height: 40px; border-radius: 8px; margin-bottom: 10px;"></div>
-      <div class="skeleton-box" style="height: 40px; border-radius: 8px;"></div>
-    </div>
+  <div class="category-pills">
+    @for (cat of categorias; track cat) {
+    <button class="pill" [class.active]="categoriaSeleccionada === cat" (click)="categoriaSeleccionada = cat">
+      {{ cat }}
+    </button>
+    }
   </div>
-} @else {
-  <!-- BARRAS DE BÚSQUEDA Y CATEGORÍAS 🔍 -->
-  <div class="filters-container">
-    <div class="search-box">
-      <input type="text" [(ngModel)]="searchTerm" placeholder="🔍 Buscar cerveza, vino...">
-    </div>
-    
-    <div class="category-pills">
-      @for (cat of categorias; track cat) {
-        <button 
-          class="pill" 
-          [class.active]="categoriaSeleccionada === cat" 
-          (click)="categoriaSeleccionada = cat">
-          {{ cat }}
-        </button>
-      }
-    </div>
-  </div>
+</div>
 
 <div class="productos-container">
   <!-- Productos -->
   <div class="productos-grid">
     @if (productosFiltrados.length === 0) {
-      <div style="text-align: center; color: #666; padding: 40px; grid-column: 1 / -1;">
-        No encontramos productos con esos filtros 🕵️‍♂️
-      </div>
+    <div style="text-align: center; color: #666; padding: 40px; grid-column: 1 / -1;">
+      No encontramos productos con esos filtros 🕵️‍♂️
+    </div>
     }
     @for (p of productosFiltrados; track p.nombre) {
     <div class="producto-card">
-      <img [src]="p.img" [alt]="p.nombre">
+      <img [src]="p.img" [alt]="p.nombre" loading="lazy">
       <h3>{{ p.nombre }}</h3>
       <p class="producto-desc">{{ p.descripcion }}</p>
       <div class="producto-footer">

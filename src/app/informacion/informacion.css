@@ -1,11 +1,18 @@
 /* Contenedor Principal Centrado */
 .info-container {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
+}
+
+/* Layout de 2 columnas: Horarios/Mapa | Contacto */
+.two-col-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
 }
 
 /* --- Sección Sobre Nosotros --- */
@@ -29,15 +36,118 @@
     font-size: 1.05rem;
 }
 
-/* --- Tarjeta de Contacto --- */
+/* --- Horarios y Ubicación --- */
+.schedule-location {
+    flex: 1;
+}
+
+.schedule-location h2 {
+    color: #4A3728;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+}
+
+.info-card h3 {
+    color: #4A3728;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* Lista de Horarios */
+.schedule-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.schedule-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.schedule-list li:last-child {
+    border-bottom: none;
+}
+
+.day {
+    font-weight: 500;
+    color: #333;
+}
+
+.hours {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.schedule-note {
+    background: #fff8e1;
+    color: #f57f17;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Mapa */
+.map-container {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-map {
+    display: inline-block;
+    background: #4285F4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-map:hover {
+    background: #3367d6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
+}
+
+/* Tarjeta de Contacto */
 .contact-card {
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    max-width: 600px;
-    margin: 0 auto;
-    width: 100%;
+    flex: 1;
 }
 
 .card-header {
@@ -106,6 +216,7 @@
     transition: border-color 0.3s, box-shadow 0.3s;
     background-color: #fcfcfc;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 .form-group input:focus,
@@ -128,6 +239,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.2s, background-color 0.2s;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-submit:hover:not(:disabled) {
@@ -175,4 +287,15 @@
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(74, 55, 40, 0.2);
+}
+
+/* === RESPONSIVE (MOBILE) === */
+@media (max-width: 768px) {
+    .two-col-layout {
+        flex-direction: column;
+    }
+
+    .info-card {
+        padding: 20px;
+    }
 }

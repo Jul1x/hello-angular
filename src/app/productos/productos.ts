@@ -14,7 +14,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Producto, ProductsService } from '../services/products.service';
+import { CartService } from '../services/cart.service';
+import { OrdersService } from '../services/orders.service';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 // Interface para cada elemento del carrito (un producto + su cantidad)
 interface CartItem {
@@ -31,6 +34,8 @@ interface CartItem {
 })
 export class ProductosComponent implements OnInit {
   private productsService = inject(ProductsService);
+  private cartService = inject(CartService);
+  private ordersService = inject(OrdersService);
 
   productos: Producto[] = [];  // Lista de productos cargados desde Firestore
   carrito: CartItem[] = [];    // Carrito de compras del cliente (guardado en el navegador)
@@ -61,6 +66,9 @@ export class ProductosComponent implements OnInit {
   // GETTER DINÁMICO: Devuelve los productos filtrados según búsqueda y categoría
   get productosFiltrados(): Producto[] {
     return this.productos.filter(p => {
+      // 0. Si el producto está pausado/agotado, no lo mostramos al público
+      if (p.activo === false) return false;
+
       // 1. Filtro por categoría (Auto-clasificador para productos viejos sin el campo 'categoria')
       let catProducto = p.categoria;
       if (!catProducto) {
@@ -77,9 +85,9 @@ export class ProductosComponent implements OnInit {
 
       // 2. Filtro por búsqueda (nombre o descripción) ignorando mayúsculas/minúsculas
       const termino = this.searchTerm.toLowerCase().trim();
-      const pasaBusqueda = termino === '' || 
-                           p.nombre.toLowerCase().includes(termino) || 
-                           (p.descripcion && p.descripcion.toLowerCase().includes(termino));
+      const pasaBusqueda = termino === '' ||
+        p.nombre.toLowerCase().includes(termino) ||
+        (p.descripcion && p.descripcion.toLowerCase().includes(termino));
 
       return pasaCategoria && pasaBusqueda;
     });
@@ -94,6 +102,20 @@ export class ProductosComponent implements OnInit {
       this.carrito.push({ producto: product, cantidad: 1 });
     }
     this.saveCart();
+    this.cartService.updateCount(); // Actualizar badge del header
+
+    // Toast pequeño y no invasivo en vez de popup grande
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      background: '#4A3728',
+      color: '#fff',
+      iconColor: '#ffc107'
+    });
+    Toast.fire({ icon: 'success', title: `${product.nombre} agregado 🛒` });
   }
 
   // Modifica la cantidad de un producto en el carrito (+1 o -1)
@@ -106,6 +128,7 @@ export class ProductosComponent implements OnInit {
         this.carrito.splice(index, 1); // Eliminar del arreglo si cantidad = 0
       }
       this.saveCart();
+      this.cartService.updateCount(); // Actualizar badge del header
     }
   }
 
@@ -115,6 +138,7 @@ export class ProductosComponent implements OnInit {
     if (index > -1) {
       this.carrito.splice(index, 1);
       this.saveCart();
+      this.cartService.updateCount(); // Actualizar badge del header
     }
   }
 
@@ -122,6 +146,7 @@ export class ProductosComponent implements OnInit {
   clearCart() {
     this.carrito = [];
     localStorage.removeItem('carrito_barra_oculta');
+    this.cartService.updateCount(); // Actualizar badge del header
   }
 
   /**
@@ -138,10 +163,24 @@ export class ProductosComponent implements OnInit {
     let mensaje = '¡Hola, La Barra Oculta! ✨\n';
     mensaje += 'Me gustaría realizar el siguiente pedido:\n\n';
 
+    // Crear arreglo simplificado para guardar en Firestore
+    const itemsParaHistorial = this.carrito.map(item => ({
+      nombre: item.producto.nombre,
+      cantidad: item.cantidad,
+      precio: item.producto.precio
+    }));
+
     this.carrito.forEach(item => {
       const subtotal = item.producto.precio * item.cantidad;
       mensaje += `• ${item.cantidad} x ${item.producto.nombre} - ($${subtotal.toLocaleString()})\n`;
     });
+
+    // Guardar el pedido en el historial (Firestore) silenciosamente
+    this.ordersService.guardarPedido({
+      fecha: new Date().toISOString(),
+      total: this.total,
+      items: itemsParaHistorial
+    }).catch(err => console.error('Error guardando pedido:', err));
 
     mensaje += `\n*Total a pagar: $${this.total.toLocaleString()}*\n`;
     mensaje += '--------------------------\n';

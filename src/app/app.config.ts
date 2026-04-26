@@ -7,15 +7,6 @@
  * - provideRouter(routes)     → Activa la navegación entre páginas (Inicio, Productos, Info, Admin)
  * - provideFirebaseApp(...)   → Conecta nuestra app al proyecto de Firebase (la nube de Google)
  * - provideAuth(...)          → Activa el sistema de login/logout para administradores
-/**
- * app.config.ts - CONFIGURACIÓN CENTRAL DE LA APLICACIÓN ⚙️
- *
- * Aquí se "enchufan" todos los servicios externos que usa nuestra app.
- * Cada línea de "provide..." es como conectar un cable de corriente:
- *
- * - provideRouter(routes)     → Activa la navegación entre páginas (Inicio, Productos, Info, Admin)
- * - provideFirebaseApp(...)   → Conecta nuestra app al proyecto de Firebase (la nube de Google)
- * - provideAuth(...)          → Activa el sistema de login/logout para administradores
  * - provideFirestore(...)     → Activa la base de datos en la NUBE donde viven los productos
  *
  * 🔑 IMPORTANTE: La configuración de Firebase (apiKey, projectId, etc.) viene del archivo
@@ -40,15 +31,13 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'es-CO' },
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })), // Navegacion con scroll automatico arriba
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })), // Navegación con scroll automático arriba
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), // Conexión a Firebase (Google Cloud)
     provideAuth(() => getAuth()),                                        // Sistema de autenticación (login admin)
-    provideFirestore(() => getFirestore()), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          }), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          })                                // Base de datos en la nube (Firestore)
+    provideFirestore(() => getFirestore()),                              // Base de datos en la nube (Firestore)
+    provideServiceWorker('ngsw-worker.js', {                             // PWA: permite instalar la app como aplicación
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ]
 };

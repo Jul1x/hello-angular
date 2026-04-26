@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { CartService } from './services/cart.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, AsyncPipe, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class AppComponent { }
+export class AppComponent {
+  private cartService = inject(CartService);
+  cartCount$ = this.cartService.cartCount$;
+}

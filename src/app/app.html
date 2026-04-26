@@ -2,7 +2,14 @@
   <h1>La Barra Oculta</h1>
   <nav>
     <a routerLink="/inicio" routerLinkActive="active">Inicio</a>
-    <a routerLink="/productos" routerLinkActive="active">Productos</a>
+    <a routerLink="/productos" routerLinkActive="active">
+      Productos
+      @if (cartCount$ | async; as count) {
+        @if (count > 0) {
+          <span class="cart-badge">{{ count }}</span>
+        }
+      }
+    </a>
     <a routerLink="/informacion" routerLinkActive="active">Información</a>
   </nav>
 </header>
